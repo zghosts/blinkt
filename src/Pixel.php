@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Zghosts\Blinkt;
 
-use Zghosts\Blinkt\Exception\InvalidBrightnessLevelException;
-use Zghosts\Blinkt\Exception\InvalidColorValueException;
+use Webmozart\Assert\Assert;
 
 final class Pixel
 {
@@ -44,9 +43,8 @@ final class Pixel
 
     public function setBrightness(float $brightness): self
     {
-        if ($brightness < 0.0 || $brightness > 1.0) {
-            throw new InvalidBrightnessLevelException('Pixel should be between 0.0 and 1.0');
-        }
+        Assert::greaterThanEq($brightness, 0.0, 'Brightness should be between 0.0 and 1.0');
+        Assert::lessThanEq($brightness, 1.0, 'Brightness should be between 0.0 and 1.0');
 
         $this->brightness = $brightness;
 
@@ -55,9 +53,8 @@ final class Pixel
 
     public function setRed(int $red): self
     {
-        if ($red < 0 || $red > 255) {
-            throw new InvalidColorValueException('red should be between 0 and 255');
-        }
+        Assert::greaterThanEq($red, 0, 'Red should be between 0 and 255');
+        Assert::lessThanEq($red, 255, 'Red should be between 0 and 255');
 
         $this->red = $red;
 
@@ -66,9 +63,8 @@ final class Pixel
 
     public function setGreen(int $green): self
     {
-        if ($green < 0 || $green > 255) {
-            throw new InvalidColorValueException('green should be between 0 and 255');
-        }
+        Assert::greaterThanEq($green, 0, 'Green should be between 0 and 255');
+        Assert::lessThanEq($green, 255, 'Green should be between 0 and 255');
 
         $this->green = $green;
 
@@ -77,9 +73,8 @@ final class Pixel
 
     public function setBlue(int $blue): self
     {
-        if ($blue < 0 || $blue > 255) {
-            throw new InvalidColorValueException('blue should be between 0 and 255');
-        }
+        Assert::greaterThanEq($blue, 0, 'Blue should be between 0 and 255');
+        Assert::lessThanEq($blue, 255, 'Blue should be between 0 and 255');
 
         $this->blue = $blue;
 
@@ -113,21 +108,17 @@ final class Pixel
 
     public function setRGBB(int $red, int $green, int $blue, float $brightness): void
     {
-        if ($red < 0 || $red > 255) {
-            throw new InvalidColorValueException('Red should be between 0 and 255');
-        }
+        Assert::greaterThanEq($red, 0, 'Red should be between 0 and 255');
+        Assert::lessThanEq($red, 255, 'Red should be between 0 and 255');
 
-        if ($green < 0 || $green > 255) {
-            throw new InvalidColorValueException('Green should be between 0 and 255');
-        }
+        Assert::greaterThanEq($green, 0, 'Green should be between 0 and 255');
+        Assert::lessThanEq($green, 255, 'Green should be between 0 and 255');
 
-        if ($blue < 0 || $blue > 255) {
-            throw new InvalidColorValueException('Blue should be between 0 and 255');
-        }
+        Assert::greaterThanEq($blue, 0, 'Blue should be between 0 and 255');
+        Assert::lessThanEq($blue, 255, 'Blue should be between 0 and 255');
 
-        if ($brightness < 0.0 || $brightness > 1.0) {
-            throw new InvalidBrightnessLevelException('Brightness should be between 0.0 and 1.0');
-        }
+        Assert::greaterThanEq($brightness, 0.0, 'Brightness should be between 0.0 and 1.0');
+        Assert::lessThanEq($brightness, 1.0, 'Brightness should be between 0.0 and 1.0');
 
         $this
             ->setRed($red)

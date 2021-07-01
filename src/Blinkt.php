@@ -7,10 +7,7 @@ namespace Zghosts\Blinkt;
 use InvalidArgumentException;
 use PiPHP\GPIO\GPIOInterface;
 use PiPHP\GPIO\Pin\OutputPinInterface;
-use Zghosts\Blinkt\Exception\InvalidBrightnessLevelException;
-use Zghosts\Blinkt\Exception\InvalidColorValueException;
-use Zghosts\Blinkt\Exception\InvalidDataPinException;
-use Zghosts\Blinkt\Exception\InvalidGpioPinsException;
+use Webmozart\Assert\Assert;
 
 final class Blinkt
 {
@@ -63,16 +60,14 @@ final class Blinkt
 
     public function setup(int $dat = self::DAT, int $clk = self::CLK): void
     {
-        if ($dat < 1 || $dat > 27) {
-            throw new InvalidDataPinException(sprintf('DAT pin must be between 1 and 27 (default is %d)', self::DAT));
-        }
+        Assert::greaterThanEq($dat, 1, sprintf('DAT pin must be between 1 and 27 (default is %d)', self::DAT));
+        Assert::lessThanEq($dat, 27, sprintf('DAT pin must be between 1 and 27 (default is %d)', self::DAT));
 
-        if ($clk < 1 || $clk > 27) {
-            throw new InvalidBrightnessLevelException(sprintf('CLK pin must be between 1 and 27 (default is %d)', self::CLK));
-        }
+        Assert::greaterThanEq($clk, 1, sprintf('CLK pin must be between 1 and 27 (default is %d)', self::CLK));
+        Assert::lessThanEq($clk, 27, sprintf('CLK pin must be between 1 and 27 (default is %d)', self::CLK));
 
         if ($dat === $clk) {
-            throw new InvalidGpioPinsException('DAT-pin and CLK-pin cannot be the same');
+            throw new InvalidArgumentException('DAT-pin and CLK-pin cannot be the same');
         }
 
         $this->dataPin  = $this->gpio->getOutputPin($dat);
@@ -119,9 +114,8 @@ final class Blinkt
      */
     public function setBrightness(float $brightness): void
     {
-        if ($brightness < 0 || $brightness > 1) {
-            throw new InvalidBrightnessLevelException('Brightness should be between 0.0 and 1.0');
-        }
+        Assert::greaterThanEq($brightness, 0.0, 'Brightness should be between 0.0 and 1.0');
+        Assert::lessThanEq($brightness, 1.0, 'Brightness should be between 0.0 and 1.0');
 
         foreach ($this->pixels as $pixel) {
             $pixel->setBrightness($brightness);
@@ -130,35 +124,29 @@ final class Blinkt
 
     public function getPixel(int $pixel): Pixel
     {
-        if ($pixel < 0 || $pixel > 7) {
-            throw new InvalidArgumentException('Pixel should be between 0 and 7');
-        }
+        Assert::greaterThanEq($pixel, 0, 'Pixel should be between 0 and 7');
+        Assert::lessThanEq($pixel, 7, 'Pixel should be between 0 and 7');
 
         return $this->pixels[$pixel];
     }
 
     public function setPixel(int $pixel, int $red, int $green, int $blue, float $brightness = null): void
     {
-        if ($pixel < 0 || $pixel > 7) {
-            throw new InvalidArgumentException('Pixel should be between 0 and 7');
-        }
+        Assert::greaterThanEq($pixel, 0, 'Pixel should be between 0 and 7');
+        Assert::lessThanEq($pixel, 7, 'Pixel should be between 0 and 7');
 
-        if ($red < 0 || $red > 255) {
-            throw new InvalidColorValueException('Pixel should be between 0 and 255');
-        }
+        Assert::greaterThanEq($red, 0, 'Red should be between 0 and 255');
+        Assert::lessThanEq($red, 255, 'Red should be between 0 and 255');
 
-        if ($green < 0 || $green > 255) {
-            throw new InvalidColorValueException('Pixel should be between 0 and 255');
-        }
+        Assert::greaterThanEq($green, 0, 'Green should be between 0 and 255');
+        Assert::lessThanEq($green, 255, 'Green should be between 0 and 255');
 
-        if ($blue < 0 || $blue > 255) {
-            throw new InvalidColorValueException('Pixel should be between 0 and 255');
-        }
+        Assert::greaterThanEq($blue, 0, 'Blue should be between 0 and 255');
+        Assert::lessThanEq($blue, 255, 'Blue should be between 0 and 255');
 
         if (null !== $brightness) {
-            if ($brightness < 0.0 || $brightness > 1.0) {
-                throw new InvalidBrightnessLevelException('Pixel should be between 0.0 and 1.0');
-            }
+            Assert::greaterThanEq($brightness, 0.0, 'Brightness should be between 0.0 and 1.0');
+            Assert::lessThanEq($brightness, 1.0, 'Brightness should be between 0.0 and 1.0');
         }
 
         $this->pixels[$pixel]
@@ -173,22 +161,18 @@ final class Blinkt
 
     public function setPixels(int $red, int $green, int $blue, float $brightness = null): void
     {
-        if ($red < 0 || $red > 255) {
-            throw new InvalidColorValueException('Pixel should be between 0 and 255');
-        }
+        Assert::greaterThanEq($red, 0, 'Red should be between 0 and 255');
+        Assert::lessThanEq($red, 255, 'Red should be between 0 and 255');
 
-        if ($green < 0 || $green > 255) {
-            throw new InvalidColorValueException('Pixel should be between 0 and 255');
-        }
+        Assert::greaterThanEq($green, 0, 'Green should be between 0 and 255');
+        Assert::lessThanEq($green, 255, 'Green should be between 0 and 255');
 
-        if ($blue < 0 || $blue > 255) {
-            throw new InvalidColorValueException('Pixel should be between 0 and 255');
-        }
+        Assert::greaterThanEq($blue, 0, 'Blue should be between 0 and 255');
+        Assert::lessThanEq($blue, 255, 'Blue should be between 0 and 255');
 
         if (null !== $brightness) {
-            if ($brightness < 0.0 || $brightness > 1.0) {
-                throw new InvalidBrightnessLevelException('Brightness should be between 0.0 and 1.0');
-            }
+            Assert::greaterThanEq($brightness, 0.0, 'Brightness should be between 0.0 and 1.0');
+            Assert::lessThanEq($brightness, 1.0, 'Brightness should be between 0.0 and 1.0');
         }
 
         for ($p = 0; $p < self::NUM_PIXELS; ++$p) {

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Zghosts\Blinkt\Test;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Zghosts\Blinkt\Exception\InvalidBrightnessLevelException;
-use Zghosts\Blinkt\Exception\InvalidColorValueException;
 use Zghosts\Blinkt\Pixel;
 
 class PixelTest extends TestCase
@@ -24,7 +23,7 @@ class PixelTest extends TestCase
      */
     public function brightnessMoreThan1ThrowsException(): void
     {
-        $this->expectException(InvalidBrightnessLevelException::class);
+        $this->expectException(InvalidArgumentException::class);
         $pixel = new Pixel();
         $pixel->setBrightness(1.1);
     }
@@ -34,7 +33,7 @@ class PixelTest extends TestCase
      */
     public function brightnessLessThan0ThrowsException(): void
     {
-        $this->expectException(InvalidBrightnessLevelException::class);
+        $this->expectException(InvalidArgumentException::class);
         $pixel = new Pixel();
         $pixel->setBrightness(-1);
     }
@@ -44,7 +43,7 @@ class PixelTest extends TestCase
      */
     public function redMoreThan255ThrowsException(): void
     {
-        $this->expectException(InvalidColorValueException::class);
+        $this->expectException(InvalidArgumentException::class);
         $pixel = new Pixel();
         $pixel->setRed(256);
     }
@@ -54,7 +53,7 @@ class PixelTest extends TestCase
      */
     public function redLessThan0ThrowsException(): void
     {
-        $this->expectException(InvalidColorValueException::class);
+        $this->expectException(InvalidArgumentException::class);
         $pixel = new Pixel();
         $pixel->setRed(-1);
     }
@@ -64,7 +63,7 @@ class PixelTest extends TestCase
      */
     public function greenLessThan0ThrowsException(): void
     {
-        $this->expectException(InvalidColorValueException::class);
+        $this->expectException(InvalidArgumentException::class);
         $pixel = new Pixel();
         $pixel->setGreen(-1);
     }
@@ -74,7 +73,7 @@ class PixelTest extends TestCase
      */
     public function blueLessThan0ThrowsException(): void
     {
-        $this->expectException(InvalidColorValueException::class);
+        $this->expectException(InvalidArgumentException::class);
         $pixel = new Pixel();
         $pixel->setBlue(-1);
     }

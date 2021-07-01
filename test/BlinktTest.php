@@ -11,10 +11,6 @@ use PiPHP\GPIO\Pin\OutputPinInterface;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Zghosts\Blinkt\Blinkt;
-use Zghosts\Blinkt\Exception\InvalidBrightnessLevelException;
-use Zghosts\Blinkt\Exception\InvalidColorValueException;
-use Zghosts\Blinkt\Exception\InvalidDataPinException;
-use Zghosts\Blinkt\Exception\InvalidGpioPinsException;
 use Zghosts\Blinkt\Pixel;
 use Zghosts\Blinkt\Test\GPIO\RecordingOutputPin;
 
@@ -44,7 +40,7 @@ class BlinktTest extends TestCase
         $gpio   = $this->prophesize(GPIOInterface::class);
         $blinkt = new Blinkt($gpio->reveal());
 
-        $this->expectException(InvalidBrightnessLevelException::class);
+        $this->expectException(InvalidArgumentException::class);
         $blinkt->setBrightness(1.1);
     }
 
@@ -346,11 +342,11 @@ class BlinktTest extends TestCase
     public function invalidPinValuesProvider(): array
     {
         return [
-            'DataPin < 1'              => [0, 1, InvalidDataPinException::class],
-            'DataPin > 27'             => [28, 1, InvalidDataPinException::class],
-            'ClockPin < 1'             => [1, 0, InvalidBrightnessLevelException::class],
-            'ClockPin > 27'            => [1, 28, InvalidBrightnessLevelException::class],
-            'Clock and Data are Equal' => [1, 1, InvalidGpioPinsException::class],
+            'DataPin < 1'              => [0, 1, InvalidArgumentException::class],
+            'DataPin > 27'             => [28, 1, InvalidArgumentException::class],
+            'ClockPin < 1'             => [1, 0, InvalidArgumentException::class],
+            'ClockPin > 27'            => [1, 28, InvalidArgumentException::class],
+            'Clock and Data are Equal' => [1, 1, InvalidArgumentException::class],
         ];
     }
 
@@ -389,14 +385,14 @@ class BlinktTest extends TestCase
     public function invalidValuesProvider(): array
     {
         return [
-            'Invalid red > 255'        => [256, 255, 255, 0.1, InvalidColorValueException::class],
-            'Invalid red < 0'          => [-1, 255, 255, 0.1, InvalidColorValueException::class],
-            'Invalid green > 255'      => [255, 256, 255, 0.1, InvalidColorValueException::class],
-            'Invalid green < 0'        => [255, -1, 255, 0.1, InvalidColorValueException::class],
-            'Invalid blue > 255'       => [255, 255, 256, 0.1, InvalidColorValueException::class],
-            'Invalid blue < 0'         => [255, 255, -1, 0.1, InvalidColorValueException::class],
-            'Invalid brightness > 1'   => [255, 255, 255, 1.1, InvalidBrightnessLevelException::class],
-            'Invalid brightness < 0'   => [255, 255, 255, -0.1, InvalidBrightnessLevelException::class],
+            'Invalid red > 255'        => [256, 255, 255, 0.1, InvalidArgumentException::class],
+            'Invalid red < 0'          => [-1, 255, 255, 0.1, InvalidArgumentException::class],
+            'Invalid green > 255'      => [255, 256, 255, 0.1, InvalidArgumentException::class],
+            'Invalid green < 0'        => [255, -1, 255, 0.1, InvalidArgumentException::class],
+            'Invalid blue > 255'       => [255, 255, 256, 0.1, InvalidArgumentException::class],
+            'Invalid blue < 0'         => [255, 255, -1, 0.1, InvalidArgumentException::class],
+            'Invalid brightness > 1'   => [255, 255, 255, 1.1, InvalidArgumentException::class],
+            'Invalid brightness < 0'   => [255, 255, 255, -0.1, InvalidArgumentException::class],
         ];
     }
 }
