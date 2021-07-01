@@ -28,8 +28,7 @@
         "phpstan/phpstan": "^0.12.90",
         "symplify/easy-coding-standard": "^9.3",
         "phpspec/prophecy-phpunit": "^2.0",
-        "jangregor/phpstan-prophecy": "^0.8.1",
-        "infection/infection": "^0.23.0"
+        "jangregor/phpstan-prophecy": "^0.8.1"
     },
     "conflict": {
         "symplify/easy-coding-standard": "9.3.27"
