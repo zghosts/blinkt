@@ -1,0 +1,11 @@
+includes:
+    - vendor/jangregor/phpstan-prophecy/extension.neon
+parameters:
+    level: 8
+    excludes_analyse:
+        - vendor
+        - ecs.php
+    inferPrivatePropertyTypeFromConstructor: true
+    reportUnmatchedIgnoredErrors: true
+    ignoreErrors:
+        - '#Parameter \#1 \$exception of method PHPUnit\\Framework\\TestCase\:\:expectException\(\) expects class-string<Throwable>, string given.#'
