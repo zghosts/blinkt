@@ -185,8 +185,8 @@ final class Blinkt
         for ($i = 0; $i < self::NUM_PIXELS; ++$i) {
             $this->dataPin->setValue($byte & self::BIT_MASK);
             $this->clockPin->setValue(1);
-            $byte = $byte << 1;
             $this->clockPin->setValue(0);
+            $byte = $byte << 1;
         }
     }
 
@@ -220,12 +220,17 @@ final class Blinkt
         $this->sof();
 
         foreach ($this->pixels as $pixel) {
-            $this->write(self::SIGNIFICANT_BIT_MASK | $pixel->getBrightness());
-            $this->write($pixel->getBlue());
-            $this->write($pixel->getGreen());
-            $this->write($pixel->getRed());
+            $this->writePixel($pixel);
         }
 
         $this->eof();
+    }
+
+    private function writePixel(Pixel $pixel): void
+    {
+        $this->write(self::SIGNIFICANT_BIT_MASK | $pixel->getBrightness());
+        $this->write($pixel->getBlue());
+        $this->write($pixel->getGreen());
+        $this->write($pixel->getRed());
     }
 }
