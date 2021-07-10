@@ -11,8 +11,17 @@ use Webmozart\Assert\Assert;
 
 final class Blinkt
 {
-    public const DAT = 23;
-    public const CLK = 24;
+    /**
+     * GPIO PIN definition for Raspberry PI.
+     */
+    public const PI_DAT = 23;
+    public const PI_CLK = 24;
+
+    /**
+     * GPIO PIN definition for PINE64.
+     */
+    public const PINE64_DAT = 77;
+    public const PINE64_CLK = 78;
 
     public const NUM_PIXELS = 8;
 
@@ -58,13 +67,13 @@ final class Blinkt
         }
     }
 
-    public function setup(int $dat = self::DAT, int $clk = self::CLK): void
+    public function setup(int $dat = self::PI_DAT, int $clk = self::PI_CLK): void
     {
-        Assert::greaterThanEq($dat, 1, sprintf('DAT pin must be between 1 and 27 (default is %d)', self::DAT));
-        Assert::lessThanEq($dat, 27, sprintf('DAT pin must be between 1 and 27 (default is %d)', self::DAT));
+        Assert::greaterThanEq($dat, 1, sprintf('DAT pin must be between 1 and 199 (default is %d)', self::PI_DAT));
+        Assert::lessThanEq($dat, 199, sprintf('DAT pin must be between 1 and 199 (default is %d)', self::PI_DAT));
 
-        Assert::greaterThanEq($clk, 1, sprintf('CLK pin must be between 1 and 27 (default is %d)', self::CLK));
-        Assert::lessThanEq($clk, 27, sprintf('CLK pin must be between 1 and 27 (default is %d)', self::CLK));
+        Assert::greaterThanEq($clk, 1, sprintf('CLK pin must be between 1 and 199 (default is %d)', self::PI_CLK));
+        Assert::lessThanEq($clk, 199, sprintf('CLK pin must be between 1 and 199 (default is %d)', self::PI_CLK));
 
         if ($dat === $clk) {
             throw new InvalidArgumentException('DAT-pin and CLK-pin cannot be the same');

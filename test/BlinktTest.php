@@ -51,11 +51,11 @@ class BlinktTest extends TestCase
     {
         $gpio = $this->prophesize(GPIOInterface::class);
 
-        $dataPin  = new RecordingOutputPin(Blinkt::DAT);
-        $clockPin = new RecordingOutputPin(Blinkt::CLK);
+        $dataPin  = new RecordingOutputPin(Blinkt::PI_DAT);
+        $clockPin = new RecordingOutputPin(Blinkt::PI_CLK);
 
-        $gpio->getOutputPin(Blinkt::DAT)->willReturn($dataPin)->shouldBeCalledOnce();
-        $gpio->getOutputPin(Blinkt::CLK)->willReturn($clockPin)->shouldBeCalledOnce();
+        $gpio->getOutputPin(Blinkt::PI_DAT)->willReturn($dataPin)->shouldBeCalledOnce();
+        $gpio->getOutputPin(Blinkt::PI_CLK)->willReturn($clockPin)->shouldBeCalledOnce();
 
         $blinkt = new Blinkt($gpio->reveal());
 
@@ -215,8 +215,8 @@ class BlinktTest extends TestCase
     {
         $gpio = $this->prophesize(GPIOInterface::class);
 
-        $gpio->getOutputPin(BLINKT::DAT)->shouldBeCalledOnce();
-        $gpio->getOutputPin(BLINKT::CLK)->shouldBeCalledOnce();
+        $gpio->getOutputPin(BLINKT::PI_DAT)->shouldBeCalledOnce();
+        $gpio->getOutputPin(BLINKT::PI_CLK)->shouldBeCalledOnce();
 
         $blinkt = new Blinkt($gpio->reveal());
         $blinkt->setup();
@@ -249,8 +249,8 @@ class BlinktTest extends TestCase
     {
         $gpio = $this->prophesize(GPIOInterface::class);
 
-        $gpio->getOutputPin(BLINKT::DAT)->shouldNotBeCalled();
-        $gpio->getOutputPin(BLINKT::CLK)->shouldNotBeCalled();
+        $gpio->getOutputPin(BLINKT::PI_DAT)->shouldNotBeCalled();
+        $gpio->getOutputPin(BLINKT::PI_CLK)->shouldNotBeCalled();
 
         $blinkt = new Blinkt($gpio->reveal());
     }
@@ -268,8 +268,8 @@ class BlinktTest extends TestCase
         $datPin->setValue(Argument::any())->shouldBeCalledTimes(258);
         $clkPin->setValue(Argument::any())->shouldBeCalledTimes(648);
 
-        $gpio->getOutputPin(BLINKT::DAT)->willReturn($datPin->reveal())->shouldBeCalledOnce();
-        $gpio->getOutputPin(BLINKT::CLK)->willReturn($clkPin->reveal())->shouldBeCalledOnce();
+        $gpio->getOutputPin(BLINKT::PI_DAT)->willReturn($datPin->reveal())->shouldBeCalledOnce();
+        $gpio->getOutputPin(BLINKT::PI_CLK)->willReturn($clkPin->reveal())->shouldBeCalledOnce();
 
         $blinkt = new Blinkt($gpio->reveal());
         $blinkt->setClearOnExit();
@@ -343,9 +343,9 @@ class BlinktTest extends TestCase
     {
         return [
             'DataPin < 1'              => [0, 1, InvalidArgumentException::class],
-            'DataPin > 27'             => [28, 1, InvalidArgumentException::class],
+            'DataPin > 199'            => [200, 1, InvalidArgumentException::class],
             'ClockPin < 1'             => [1, 0, InvalidArgumentException::class],
-            'ClockPin > 27'            => [1, 28, InvalidArgumentException::class],
+            'ClockPin > 199'           => [1, 200, InvalidArgumentException::class],
             'Clock and Data are Equal' => [1, 1, InvalidArgumentException::class],
         ];
     }
